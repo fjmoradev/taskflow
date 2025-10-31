@@ -10,9 +10,9 @@ app.use(cors());            // Permite comunicación desde frontend
 app.use(express.json());    // Permite recibir datos JSON del frontend
 
 // Conectar con MongoDB local
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+const mongoose = require("mongoose");
+require("dotenv").config();
+
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
