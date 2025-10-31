@@ -10,12 +10,16 @@ app.use(cors());            // Permite comunicación desde frontend
 app.use(express.json());    // Permite recibir datos JSON del frontend
 
 // Conectar con MongoDB local
-mongoose.connect(mongodb+srv:fjmoradev_db_user:<db_password>@cluster0.ruqawbh.mongodb.net/?appName=Cluster0, {
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB conectado'))
-.catch(err => console.error('Error conectando a MongoDB:', err));
+.then(() => console.log("✅ Connected to MongoDB"))
+.catch(err => console.error("❌ MongoDB connection error:", err));
 
 // ----------------- RUTAS -------------------
 
