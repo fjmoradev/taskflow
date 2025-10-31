@@ -1,5 +1,5 @@
 const express = require('express');   // Framework para servidor
-const mongoose = require('mongoose'); // Conectar con MongoDB
+
 const cors = require('cors');         // Permite comunicación frontend-backend
 const Task = require('./models/Task'); // Nuestro modelo de tareas
 const app = express();
