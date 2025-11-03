@@ -78,6 +78,12 @@ app.delete('/tasks/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Capturar cualquier ruta que no sea API y enviar index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
 
 // ---------------------------
 // INICIAR SERVIDOR
