@@ -4,7 +4,7 @@
 const express = require('express');   // Framework para servidor
 const cors = require('cors');         // Permite comunicación frontend-backend
 const mongoose = require('mongoose'); // Conexión con MongoDB
-const path = require('path'); // <--- ESTA LÍNEA ES LA CLAVE
+const path = require('path');         // Para rutas de archivos
 require('dotenv').config();           // Variables de entorno
 const Task = require('./models/Task');// Modelo de tareas
 
@@ -14,14 +14,12 @@ const PORT = process.env.PORT || 3000;
 // ---------------------------
 // MIDDLEWARES
 // ---------------------------
-app.use(cors());            // Permite comunicación desde frontend
-app.use(express.json());    // Permite recibir datos JSON del frontend
+app.use(cors());
+app.use(express.json());
 
 // ---------------------------
 // CONEXIÓN A MONGODB ATLAS
 // ---------------------------
-
-// Usa la variable de entorno MONGO_URI si existe (Render), o la de respaldo local
 const mongoURI =
   process.env.MONGO_URI ||
   'mongodb+srv://fjmoradev_db_user:Mariyalo9@cluster0.ruqawbh.mongodb.net/sample_mflix?retryWrites=true&w=majority';
@@ -32,14 +30,14 @@ mongoose
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // ---------------------------
-// RUTAS
+// RUTAS API
 // ---------------------------
 
 // GET: obtener todas las tareas
 app.get('/tasks', async (req, res) => {
   try {
-    const tasks = await Task.find(); // Buscar todas las tareas
-    res.json(tasks);                 // Devolver en JSON
+    const tasks = await Task.find();
+    res.json(tasks);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,14 +47,14 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks', async (req, res) => {
   try {
     const newTask = new Task({ title: req.body.title });
-    const savedTask = await newTask.save();   // 👈 ESTA LÍNEA CORRECTA
+    const savedTask = await newTask.save();
     res.status(201).json(savedTask);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// PUT: actualizar tarea (marcar completada)
+// PUT: actualizar tarea
 app.put('/tasks/:id', async (req, res) => {
   try {
     const updatedTask = await Task.findByIdAndUpdate(
@@ -79,11 +77,15 @@ app.delete('/tasks/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ---------------------------
+// SERVIR FRONTEND ESTÁTICO
+// ---------------------------
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Capturar cualquier ruta que no sea API y enviar index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+// Catch-all para frontend (React, HTML SPA, etc.)
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // ---------------------------
