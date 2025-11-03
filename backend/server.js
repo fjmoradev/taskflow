@@ -48,4 +48,40 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks', async (req, res) => {
   try {
     const newTask = new Task({ title: req.body.title });
-    const saved
+    const savedTask = await newTask.save();   // 👈 ESTA LÍNEA CORRECTA
+    res.status(201).json(savedTask);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT: actualizar tarea (marcar completada)
+app.put('/tasks/:id', async (req, res) => {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title: req.body.title, completed: req.body.completed },
+      { new: true }
+    );
+    res.json(updatedTask);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE: eliminar tarea
+app.delete('/tasks/:id', async (req, res) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Tarea eliminada' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------
+// INICIAR SERVIDOR
+// ---------------------------
+app.listen(PORT, () =>
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
+);
