@@ -2,9 +2,9 @@
 // DEPENDENCIAS
 // ---------------------------
 const express = require('express');   // Framework para servidor
-const cors = require('cors');         // Permite comunicación frontend-backend
+const cors = require('cors');         // Comunicación frontend-backend
 const mongoose = require('mongoose'); // Conexión con MongoDB
-const path = require('path');         // Para rutas de archivos
+const path = require('path');         // Manejo de rutas
 require('dotenv').config();           // Variables de entorno
 const Task = require('./models/Task');// Modelo de tareas
 
@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 3000;
 // ---------------------------
 // MIDDLEWARES
 // ---------------------------
-app.use(cors());            // Permite comunicación desde frontend
-app.use(express.json());    // Permite recibir datos JSON del frontend
+app.use(cors());
+app.use(express.json());
 
 // ---------------------------
 // CONEXIÓN A MONGODB ATLAS
@@ -36,8 +36,8 @@ mongoose
 // GET: obtener todas las tareas
 app.get('/tasks', async (req, res) => {
   try {
-    const tasks = await Task.find(); 
-    res.json(tasks);                 
+    const tasks = await Task.find();
+    res.json(tasks);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -47,14 +47,14 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks', async (req, res) => {
   try {
     const newTask = new Task({ title: req.body.title });
-    const savedTask = await newTask.save();   
+    const savedTask = await newTask.save();
     res.status(201).json(savedTask);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// PUT: actualizar tarea (marcar completada)
+// PUT: actualizar tarea
 app.put('/tasks/:id', async (req, res) => {
   try {
     const updatedTask = await Task.findByIdAndUpdate(
@@ -83,11 +83,12 @@ app.delete('/tasks/:id', async (req, res) => {
 // ---------------------------
 
 // Carpeta frontend al mismo nivel que backend
-app.use(express.static(path.join(__dirname, '../frontend')));
+const frontendPath = path.join(__dirname, '../frontend');
+app.use(express.static(frontendPath));
 
 // Para cualquier ruta que no sea API, enviar index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ---------------------------
