@@ -4,6 +4,7 @@
 const express = require('express');   // Framework para servidor
 const cors = require('cors');         // Permite comunicación frontend-backend
 const mongoose = require('mongoose'); // Conexión con MongoDB
+const path = require('path'); // <--- ESTA LÍNEA ES LA CLAVE
 require('dotenv').config();           // Variables de entorno
 const Task = require('./models/Task');// Modelo de tareas
 
