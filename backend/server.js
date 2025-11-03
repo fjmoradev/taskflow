@@ -1,12 +1,12 @@
 // ---------------------------
 // DEPENDENCIAS
 // ---------------------------
-const express = require('express');   // Framework para servidor
-const cors = require('cors');         // Permite comunicación frontend-backend
-const mongoose = require('mongoose'); // Conexión con MongoDB
-const path = require('path');         // Para rutas de archivos
-require('dotenv').config();           // Variables de entorno
-const Task = require('./models/Task');// Modelo de tareas
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const path = require('path');           // ⚠️ Importante para rutas de frontend
+require('dotenv').config();
+const Task = require('./models/Task');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -79,18 +79,18 @@ app.delete('/tasks/:id', async (req, res) => {
 });
 
 // ---------------------------
-// SERVIR FRONTEND ESTÁTICO
+// SERVIR FRONTEND
 // ---------------------------
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Catch-all para frontend (React, HTML SPA, etc.)
-app.get('/*', (req, res) => {
+// Catch-all: enviar index.html para cualquier ruta que no sea API
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // ---------------------------
 // INICIAR SERVIDOR
 // ---------------------------
-app.listen(PORT, () =>
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+});
