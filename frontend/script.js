@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/tasks';
+const apiUrl = '/tasks'; // ⚡ Cambiado a ruta relativa
 const taskList = document.getElementById('taskList');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const taskTitle = document.getElementById('taskTitle');
