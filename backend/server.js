@@ -23,7 +23,7 @@ app.use(express.json());    // Permite recibir datos JSON del frontend
 // Usa la variable de entorno MONGO_URI si existe (Render), o la de respaldo local
 const mongoURI =
   process.env.MONGO_URI ||
-  'mongodb+srv://fjmoradev_db_user:Mariyalo9%2E@cluster0.ruqawbh.mongodb.net/sample_mflix?retryWrites=true&w=majority';
+  'mongodb+srv://fjmoradev_db_user:Mariyalo9@cluster0.ruqawbh.mongodb.net/sample_mflix?retryWrites=true&w=majority';
 
 mongoose
   .connect(mongoURI)
